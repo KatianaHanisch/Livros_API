@@ -3,7 +3,22 @@ import Jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import { usersModel } from "../models/users-model";
 
-export const ensureAuth = (req: Request, res: Response, next: NextFunction) => {
+type UserProps = {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+};
+
+interface AuthenticatedUser extends Request {
+  authenticatedUser?: UserProps;
+}
+
+export const ensureAuth = (
+  req: AuthenticatedUser,
+  res: Response,
+  next: NextFunction
+) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
@@ -23,7 +38,7 @@ export const ensureAuth = (req: Request, res: Response, next: NextFunction) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    req.user = user;
+    req.authenticatedUser = user;
 
     next();
   } catch (error) {
