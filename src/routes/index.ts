@@ -1,7 +1,8 @@
 import { Router, Request, Response } from "express";
+import { authController } from "../controllers/auth-controller";
 
-export const routes = Router();
+export const router = Router();
 
-routes.get("/", (req: Request, res: Response) => {
-  return res.json({ message: "Hello World!" });
-});
+router.post("/auth/register", authController.register);
+
+router.post("/auth/login", authController.login);
