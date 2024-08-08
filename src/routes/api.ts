@@ -6,3 +6,5 @@ export const apiRouter = Router();
 
 apiRouter.get("/books", booksController.getAllBooks);
 apiRouter.get("/books/:id", booksController.getBookById);
+
+apiRouter.post("/books", booksController.createBook);
