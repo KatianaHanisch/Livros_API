@@ -1,14 +1,16 @@
-import express, { Request, Response } from "express";
-
+import express from "express";
 import dotenv from "dotenv";
-import { router } from "./routes";
+
+import { authRouter } from "./routes/auth";
+import { apiRouter } from "./routes/api";
 
 const app = express();
 dotenv.config();
 
 app.use(express.json());
 
-app.use(router);
+app.use("/auth", authRouter);
+app.use("/api", apiRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
