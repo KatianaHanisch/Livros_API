@@ -34,7 +34,7 @@ const loans: LoanProps[] = [
     loanDate: new Date("2024-01-01"),
     returnDate: null,
     isReturned: false,
-    isLate: true,
+    isLate: false,
   },
 ];
 
@@ -82,11 +82,14 @@ const returnLoan = (id: string) => {
   loan.isReturned = true;
 
   const today = new Date();
-  const limitDate = new Date(loan.loanDate);
+  const limitDate = new Date(loan.returnDate!);
+
   loan.isLate = today > limitDate;
   loan.returnDate = today;
 
   const book = booksModel.returnBook(loan.bookId);
+
+  return book;
 };
 
 export const loansModel = {

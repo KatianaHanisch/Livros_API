@@ -1,8 +1,15 @@
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 
-const users = [
-  { id: "1", name: "teste", email: "teste@gmail.com", password: "123" },
+interface UserProps {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+}
+
+const users: UserProps[] = [
+  { id: uuidv4(), name: "teste", email: "teste@gmail.com", password: "123" },
 ];
 
 const getAllUsers = () => users;
