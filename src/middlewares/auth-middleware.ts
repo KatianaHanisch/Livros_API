@@ -11,7 +11,7 @@ type UserProps = {
 };
 
 interface AuthenticatedUser extends Request {
-  authenticatedUser?: UserProps;
+  user?: UserProps;
 }
 
 export const ensureAuth = (
@@ -38,7 +38,7 @@ export const ensureAuth = (
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    req.authenticatedUser = user;
+    req.user = user;
 
     next();
   } catch (error) {
