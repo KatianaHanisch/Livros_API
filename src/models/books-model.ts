@@ -3,9 +3,9 @@ import { v4 as uuidv4 } from "uuid";
 
 interface BookProps {
   id?: string;
-  title: string;
-  author: string;
-  quantityAvailable: number;
+  title?: string;
+  author?: string;
+  quantityAvailable?: number;
 }
 
 let books = [
@@ -47,7 +47,7 @@ const createBook = (
 
   return newBook;
 };
-const updateBook = (id: string, updateBook: BookProps) => {
+const updateBook = (id: string | undefined, updateBook: BookProps) => {
   const bookIndex = books.findIndex((book) => book.id === id);
 
   if (bookIndex === -1) throw new HttpError(404, "Book not found");
@@ -83,10 +83,28 @@ const deleteBook = (id: string) => {
   return deletedBook;
 };
 
+const takeBook = (id: string) => {
+  const book = books.find((book) => book.id === id);
+
+  if (!book) throw new HttpError(404, "Book not found");
+
+  book.quantityAvailable -= 1;
+};
+
+const returnBook = (id: string) => {
+  const book = books.find((book) => book.id === id);
+
+  if (!book) throw new HttpError(404, "Book not found");
+
+  book.quantityAvailable += 1;
+};
+
 export const booksModel = {
   getAllBooks,
   getBookById,
   createBook,
   updateBook,
   deleteBook,
+  takeBook,
+  returnBook,
 };
