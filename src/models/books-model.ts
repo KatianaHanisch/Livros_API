@@ -1,8 +1,9 @@
+import { HttpError } from "../errors/HttpError";
 import { v4 as uuidv4 } from "uuid";
 
 interface BookProps {
-  id: string;
-  name: string;
+  id?: string;
+  title: string;
   author: string;
   quantityAvailable: number;
 }
@@ -10,13 +11,13 @@ interface BookProps {
 let books = [
   {
     id: "1",
-    name: "Dom Casmurro",
+    title: "Dom Casmurro",
     author: "Machado de Assis",
     quantityAvailable: 5,
   },
   {
     id: "2",
-    name: "Nevernight",
+    title: "Nevernight",
     author: "Jay Kristoff",
     quantityAvailable: 5,
   },
@@ -27,17 +28,17 @@ const getAllBooks = () => books;
 const getBookById = (id: string) => books.find((book) => book.id === id);
 
 const createBook = (
-  name: string,
+  title: string,
   author: string,
   quantityAvailable: number
 ) => {
-  const bookAlredyExists = books.find((book) => book.name === name);
+  const bookAlredyExists = books.find((book) => book.title === title);
 
   if (bookAlredyExists) return null;
 
   const newBook = {
     id: uuidv4(),
-    name,
+    title,
     author,
     quantityAvailable,
   };
@@ -49,17 +50,31 @@ const createBook = (
 const updateBook = (id: string, updateBook: BookProps) => {
   const bookIndex = books.findIndex((book) => book.id === id);
 
-  if (bookIndex === -1) throw new Error("Book not found");
+  if (bookIndex === -1) throw new HttpError(404, "Book not found");
 
-  books[bookIndex] = { ...books[bookIndex], ...updateBook };
+  const book = books[bookIndex];
 
-  return books[bookIndex];
+  if (updateBook.title !== undefined) {
+    book.title = updateBook.title;
+  }
+
+  if (updateBook.author !== undefined) {
+    book.author = updateBook.author;
+  }
+
+  if (updateBook.quantityAvailable !== undefined) {
+    book.quantityAvailable = updateBook.quantityAvailable;
+  }
+
+  books[bookIndex] = book;
+
+  return book;
 };
 
 const deleteBook = (id: string) => {
   const bookIndex = books.findIndex((book) => book.id === id);
 
-  if (bookIndex === -1) throw new Error("Book not found");
+  if (bookIndex === -1) throw new HttpError(404, "Book not found");
 
   const deletedBook = books[bookIndex];
 
