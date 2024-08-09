@@ -10,13 +10,13 @@ interface BookProps {
 
 let books = [
   {
-    id: "1",
+    id: uuidv4(),
     title: "Dom Casmurro",
     author: "Machado de Assis",
     quantityAvailable: 5,
   },
   {
-    id: "2",
+    id: uuidv4(),
     title: "Nevernight",
     author: "Jay Kristoff",
     quantityAvailable: 5,
